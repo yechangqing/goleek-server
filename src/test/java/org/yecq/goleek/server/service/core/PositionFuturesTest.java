@@ -29,7 +29,7 @@ public class PositionFuturesTest extends Base {
     @Test
     public void test1_PositionFutures() {
         this.expectedEx.expect(IllegalArgumentException.class);
-        this.expectedEx.expectMessage("abcd");
+        this.expectedEx.expectMessage("没有属性abcd");
         Map hv = new HashMap();
         hv.put("abcd", "22");
         new PositionFutures(hv);
@@ -95,7 +95,8 @@ public class PositionFuturesTest extends Base {
         map.put("contract", contract);
         map.put("direct", direct);
         map.put("account", account);
-        PositionFutures p = new PositionFutures(map);
+        PositionFutures p = new PositionFutures();
+        p.setOriginHv(map);
         String id = p.exist();
         assertThat(id, is("1"));
     }
@@ -109,7 +110,8 @@ public class PositionFuturesTest extends Base {
         map.put("contract", contract);
         map.put("direct", direct);
         map.put("account", account);
-        PositionFutures p = new PositionFutures(map);
+        PositionFutures p = new PositionFutures();
+        p.setOriginHv(map);
         String id = p.exist();
         assertThat(id, nullValue());
     }
@@ -123,7 +125,8 @@ public class PositionFuturesTest extends Base {
         map.put("account", account);
         this.expectedEx.expect(IllegalArgumentException.class);
         this.expectedEx.expectMessage("需要合约名、方向、账户");
-        PositionFutures p = new PositionFutures(map);
+        PositionFutures p = new PositionFutures();
+        p.setOriginHv(map);
         String id = p.exist();
     }
 

@@ -1,6 +1,8 @@
 package org.yecq.goleek.server.service.core;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.yecq.baseframework.plain.core.CoreSelector;
@@ -80,7 +82,14 @@ public final class ObjectCreator {
     }
 
     public List<PositionFutures> getPositionFuturesList(String condition) {
-        return sel.getList(condition, new String[]{"id"}, PositionFutures.class);
+        List<Map<String, Object>> list = sel.getList(condition, new String[]{"id"}, SaeViewSubstitute.v_position_futures);
+        List<PositionFutures> ret = new LinkedList();
+        int len = list.size();
+        for (int i = 0; i < len; i++) {
+            String id = list.get(i).get("id") + "";
+            ret.add(new PositionFutures(id));
+        }
+        return ret;
     }
 
     public List<PositionFutures> getPositionFuturesListAll() {
@@ -98,7 +107,14 @@ public final class ObjectCreator {
     }
 
     public List<PositionStock> getPositionStockList(String condition) {
-        return sel.getList(condition, new String[]{"id"}, PositionStock.class);
+        List<Map<String, Object>> list = sel.getList(condition, new String[]{"id"}, SaeViewSubstitute.v_position_stock);
+        List<PositionStock> ret = new LinkedList();
+        int len = list.size();
+        for (int i = 0; i < len; i++) {
+            String id = list.get(i).get("id") + "";
+            ret.add(new PositionStock(id));
+        }
+        return ret;
     }
 
     public List<PositionStock> getPositionStockListAll() {

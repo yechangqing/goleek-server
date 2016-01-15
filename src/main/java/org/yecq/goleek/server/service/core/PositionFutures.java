@@ -3,8 +3,7 @@ package org.yecq.goleek.server.service.core;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.yecq.baseframework.plain.core.CoreSelector;
-import org.yecq.baseframework.plain.core.CoreView;
+import org.yecq.baseframework.plain.core.CoreTable;
 import org.yecq.baseframework.plain.core.Root;
 import org.yecq.record.Record;
 import org.yecq.record.SqlOperator;
@@ -13,7 +12,8 @@ import org.yecq.record.SqlOperator;
  *
  * @author yecq
  */
-public class PositionFutures extends CoreView {
+//  由于没有视图，所以用position_futures表作为CoreTable
+public class PositionFutures extends CoreTable {
 
     public PositionFutures(String id) {
         super(id);
@@ -28,16 +28,15 @@ public class PositionFutures extends CoreView {
     }
 
     // 根据合约，方向，账户，判断是否有持仓，没有返回null
-    public String exist() {
-        Object contract = getInfoOfHv("contract");
-        Object direct = getInfoOfHv("direct");
-        Object account = getInfoOfHv("account");
+    String exist() {
+        Object contract = this.getOriginHv().get("contract");
+        Object direct = this.getOriginHv().get("direct");
+        Object account = this.getOriginHv().get("account");
         if (contract == null || direct == null || account == null) {
             throw new IllegalArgumentException("需要合约名、方向、账户");
         }
-//        String stmt = "select id from v_position_futures where contract=? and direct=? and account=?";
-//        List<Map<String, Object>> list = Root.getInstance().getSqlOperator().query(stmt, new Object[]{contract, direct, account});      
-        List<Map<String, Object>> list = Root.getInstance().getBean(CoreSelector.class).getList("contract=? and direct=? and account=?", new Object[]{contract, direct, account}, this);
+        String stmt = "select id from " + SaeViewSubstitute.v_position_futures + " where contract=? and direct=? and account=?";
+        List<Map<String, Object>> list = Root.getInstance().getSqlOperator().query(stmt, new Object[]{contract, direct, account});
         return list.isEmpty() ? null : list.get(0).get("id") + "";
     }
 
@@ -50,7 +49,7 @@ public class PositionFutures extends CoreView {
         hv.put("contract", contract);
         hv.put("direct", direct);
         hv.put("account", account);
-        changeHv(hv);
+        setOriginHv(hv);
         String id1 = exist();
         if (id1 == null) {
             hv.clear();
@@ -211,17 +210,29 @@ public class PositionFutures extends CoreView {
     }
 
     @Override
-    public String getView() {
-        return "v_position_futures";
+    public String getTable() {
+        return "position_futures";
     }
 
     @Override
-    public String getMainTable() {
-        return "position_futures.id";
+    public Map<String, Object> getInfo() {
+        // 返回视图
+        String stmt = "select * from " + SaeViewSubstitute.v_position_futures + " where id = ?";
+        List<Map<String, Object>> list = Root.getInstance().getSqlOperator().query(stmt, new Object[]{getId()});
+
+        return list.get(0);
     }
 
     @Override
-    public String[] getSlaveTables() {
-        return new String[]{"position_detail_futures", "detail_futures"};
+    public Object getInfo(String key) {
+        if (key == null || key.trim().equals("")) {
+            throw new IllegalArgumentException("key值为null");
+        }
+        return getInfo().get(key);
+    }
+
+    @Override
+    protected void setOriginHv(Map<String, Object> hv1) {
+        super.setOriginHv(hv1);
     }
 }

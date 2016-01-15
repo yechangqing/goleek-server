@@ -10,7 +10,7 @@
 
     <groupId>org.yecq.goleek</groupId>
     <artifactId>goleek-server</artifactId>
-    <version>1.0</version>
+    <version>1.0.sae</version>
     <packaging>war</packaging>
 
     <name>${artifactId}-${version}</name>
@@ -103,5 +103,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

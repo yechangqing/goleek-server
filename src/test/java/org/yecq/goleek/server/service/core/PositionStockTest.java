@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.closeTo;
@@ -26,7 +27,7 @@ public class PositionStockTest extends Base {
     @Test
     public void test2_PositionStock() {
         this.expectedEx.expect(IllegalArgumentException.class);
-        this.expectedEx.expectMessage("不存在字段abcd");
+        this.expectedEx.expectMessage("没有属性abcd");
         Map hv = new HashMap();
         hv.put("abcd", "22");
         new PositionStock(hv);
@@ -44,8 +45,10 @@ public class PositionStockTest extends Base {
         Map hv = new HashMap();
         hv.put("code", "600399");
         hv.put("account", "27107470");
-        String id = new PositionStock(hv).exist();
-        assertThat(id, notNullValue());
+        PositionStock p = new PositionStock();
+        p.setOriginHv(hv);
+        String id = p.exist();
+        assertThat(id, not(nullValue()));
     }
 
     @Test
@@ -53,8 +56,10 @@ public class PositionStockTest extends Base {
         Map hv = new HashMap();
         hv.put("code", "600123");
         hv.put("account", "27107470");
-        String id = new PositionStock(hv).exist();
-        assertThat(id, nullValue());
+        PositionStock p = new PositionStock();
+        p.setOriginHv(hv);
+        String id = p.exist();
+        assertThat(id, is(nullValue()));
     }
 
     @Test
@@ -69,7 +74,7 @@ public class PositionStockTest extends Base {
         String id = p.open(code, lot, open_price, open_date, quit_price, account);
         assertThat(id, notNullValue());
 
-        String stmt = "select * from v_position_stock";
+        String stmt = "select * from " + SaeViewSubstitute.v_position_stock;
         List list = Root.getInstance().getSqlOperator().query(stmt);
         assertThat(list.size(), is(4));
     }
@@ -81,7 +86,7 @@ public class PositionStockTest extends Base {
         String date = "2015-10-10";
         PositionStock p = new PositionStock("1");
         p.close(lot, price, date);
-        String stmt = "select * from v_position_stock";
+        String stmt = "select * from " + SaeViewSubstitute.v_position_stock;
         List list = Root.getInstance().getSqlOperator().query(stmt);
         assertThat(list.size(), is(2));
     }
@@ -93,7 +98,7 @@ public class PositionStockTest extends Base {
         String date = "2015-10-10";
         PositionStock p = new PositionStock("2");
         p.close(lot, price, date);
-        String stmt = "select * from v_position_stock";
+        String stmt = "select * from " + SaeViewSubstitute.v_position_stock;
         List list = Root.getInstance().getSqlOperator().query(stmt);
         assertThat(list.size(), is(3));
     }

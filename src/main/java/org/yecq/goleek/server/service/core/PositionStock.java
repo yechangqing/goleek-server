@@ -3,8 +3,7 @@ package org.yecq.goleek.server.service.core;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.yecq.baseframework.plain.core.CoreSelector;
-import org.yecq.baseframework.plain.core.CoreView;
+import org.yecq.baseframework.plain.core.CoreTable;
 import org.yecq.baseframework.plain.core.Root;
 import org.yecq.record.Record;
 import org.yecq.record.SqlOperator;
@@ -13,7 +12,7 @@ import org.yecq.record.SqlOperator;
  *
  * @author yecq
  */
-public class PositionStock extends CoreView {
+public class PositionStock extends CoreTable {
 
     public PositionStock(Map hv) {
         super(hv);
@@ -29,14 +28,13 @@ public class PositionStock extends CoreView {
 
     // 根据股票，账户，判断是否有持仓，没有返回null
     public String exist() {
-        Object code = getInfoOfHv("code");
-        Object account = getInfoOfHv("account");
+        Object code = getOriginHv().get("code");
+        Object account = getOriginHv().get("account");
         if (code == null || account == null) {
             throw new IllegalArgumentException("需要合约名、方向、账户");
         }
-//        String stmt = "select id from v_position_stock where code=? and account=?";
-//        List<Map<String, Object>> list = Root.getInstance().getSqlOperator().query(stmt, new Object[]{code, account});
-        List<Map<String, Object>> list = Root.getInstance().getBean(CoreSelector.class).getList("code=? and account=?", new Object[]{code, account}, this);
+        String stmt = "select id from " + SaeViewSubstitute.v_position_stock + " where code=? and account=?";
+        List<Map<String, Object>> list = Root.getInstance().getSqlOperator().query(stmt, new Object[]{code, account});
         return list.isEmpty() ? null : list.get(0).get("id") + "";
     }
 
@@ -48,7 +46,7 @@ public class PositionStock extends CoreView {
         Map hv = new HashMap();
         hv.put("code", code);
         hv.put("account", account);
-        changeHv(hv);
+        setOriginHv(hv);
         String id1 = exist();
         if (id1 == null) {
             hv.clear();
@@ -195,17 +193,29 @@ public class PositionStock extends CoreView {
     }
 
     @Override
-    public String getView() {
-        return "v_position_stock";
+    public String getTable() {
+        return "position_stock";
     }
 
     @Override
-    public String getMainTable() {
-        return "position_stock.id";
+    public Map<String, Object> getInfo() {
+        // 返回视图
+        String stmt = "select * from " + SaeViewSubstitute.v_position_stock + " where id = ?";
+        List<Map<String, Object>> list = Root.getInstance().getSqlOperator().query(stmt, new Object[]{getId()});
+
+        return list.get(0);
     }
 
     @Override
-    public String[] getSlaveTables() {
-        return new String[]{"position_detail_stock", "detail_stock"};
+    public Object getInfo(String key) {
+        if (key == null || key.trim().equals("")) {
+            throw new IllegalArgumentException("key值为null");
+        }
+        return getInfo().get(key);
+    }
+
+    @Override
+    protected void setOriginHv(Map<String, Object> hv1) {
+        super.setOriginHv(hv1);
     }
 }

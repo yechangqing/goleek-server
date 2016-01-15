@@ -148,13 +148,13 @@ public class ObjectCreatorTest extends Base {
         assertThat(list.size(), is(2));
     }
 
-    @Test
+//    @Test
     public void test_getPositionFuturesListAll() {
         List<PositionFutures> list = objs.getPositionFuturesListAll();
         assertThat(list.size(), is(3));
     }
 
-    @Test
+//    @Test
     public void test_getPositionFuturesActions() {
         String[] act = objs.getPositionFuturesActions("多");
         assertThat(act[0], is("卖出平仓 <="));
@@ -164,7 +164,7 @@ public class ObjectCreatorTest extends Base {
         assertThat(act[1], is("买入平仓 <="));
     }
 
-    @Test
+//    @Test
     public void test_getPositionStockList() {
         List<PositionStock> list = objs.getPositionStockList("account='27107470'");
         assertThat(list.size(), is(2));
@@ -172,7 +172,7 @@ public class ObjectCreatorTest extends Base {
         assertThat(list.get(1).getId(), is("2"));
     }
 
-    @Test
+//    @Test
     public void test_getPositionStockListAll() {
         List<PositionStock> list = objs.getPositionStockListAll();
         assertThat(list.size(), is(3));
