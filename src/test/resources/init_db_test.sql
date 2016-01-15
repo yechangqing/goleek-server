@@ -1,5 +1,5 @@
-create database goleek_test default character set utf8;
-use goleek_test;
+create database goleek_sae_test default character set utf8;
+use goleek_sae_test;
 
 # 期货合约表
 create table futures
@@ -161,28 +161,28 @@ insert into client (mac_address,note) values
 ('00-50-56-C0-00-08','笔记本虚拟网卡2');
 
 
-### 视图
+# ## 视图，sae无视图
 
 # 期货持仓
-create view v_position_futures as
-select d.contract, d.direct, count(d.id) as lot, round(avg(d.open_price),2) as open_price,
-	p.action, round(p.quit_price,2) as quit_price , d.account, min(d.open_date) as open_date , p.id
-from position_detail_futures as pd
-join position_futures as p on p.id=pd.position_futures_id
-join detail_futures as d on d.id = pd.detail_futures_id
-where d.status='持'
-group by contract,direct,account
-order by min(d.open_date), p.id
-;
+# create view v_position_futures as
+# select d.contract, d.direct, count(d.id) as lot, round(avg(d.open_price),2) as open_price,
+#	p.action, round(p.quit_price,2) as quit_price , d.account, min(d.open_date) as open_date , p.id
+# from position_detail_futures as pd
+# join position_futures as p on p.id=pd.position_futures_id
+# join detail_futures as d on d.id = pd.detail_futures_id
+# where d.status='持'
+# group by contract,direct,account
+# order by min(d.open_date), p.id
+# ;
 
 # 股票持仓
-create view v_position_stock as
-select d.code, d.name, count(d.id) as lot, round(avg(d.open_price),2) as open_price,
-	p.action, round(p.quit_price,2) as quit_price , d.account, min(d.open_date) as open_date, p.id
-from position_detail_stock as pd
-join position_stock as p on p.id = pd.position_stock_id
-join detail_stock as d on d.id = pd.detail_stock_id
-where d.status='持'
-group by account, code
-order by min(d.open_date), p.id
-;
+# create view v_position_stock as
+# select d.code, d.name, count(d.id) as lot, round(avg(d.open_price),2) as open_price,
+#	p.action, round(p.quit_price,2) as quit_price , d.account, min(d.open_date) as open_date, p.id
+# from position_detail_stock as pd
+# join position_stock as p on p.id = pd.position_stock_id
+# join detail_stock as d on d.id = pd.detail_stock_id
+# where d.status='持'
+# group by account, code
+# order by min(d.open_date), p.id
+# ;
