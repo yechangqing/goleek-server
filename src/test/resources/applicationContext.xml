@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation= "http://www.springframework.org/schema/beans 
+                            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                            http://www.springframework.org/schema/aop 
+                            http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+                            http://www.springframework.org/schema/tx 
+                            http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+                            http://www.springframework.org/schema/context
+                            http://www.springframework.org/schema/context/spring-context-4.0.xsd    
+                            ">
+    <!-- 扫描注解所在的包 -->
+    <context:component-scan base-package="org.yecq.goleek.server"/>
+    <context:component-scan base-package="org.yecq.baseframework"/>
+    <context:component-scan base-package="org.yecq.record"/>
+    
+    <!-- 配置数据源 -->
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+          p:location="jdbc_test.properties" />
+    
+    <bean id="dataSource"
+          class="org.apache.commons.dbcp2.BasicDataSource"
+          p:driverClassName="${driver}"
+          p:url="${url}"
+          p:username="${name}"
+          p:password="${passwd}" /> 
+    
+    <!-- 配置一个spring JdbcTemplate -->
+    <bean id="jdbcTemplate"
+          class="org.springframework.jdbc.core.JdbcTemplate" abstract="false"
+          lazy-init="false" autowire="default">
+        <property name="dataSource">
+            <ref bean="dataSource" />
+        </property>
+    </bean>
+    
+    <!-- 自动装配的Bean，这种方式用来配置外来的库 -->
+    
+    <!-- 配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource"/>
+    <tx:annotation-driven /> 
+    
+    <!-- 配置aop -->
+    <aop:aspectj-autoproxy/>
+    <!-- 具体aop配置 -->
+    <aop:config proxy-target-class="true">
+        <aop:aspect ref="notify_advice">
+            <!-- 此处需要手动填入 -->
+            <aop:pointcut id="notify_pointcut" expression="within(org.yecq.goleek.server.service.*) and 
+                execution(@org.yecq.baseframework.plain.core.Notify * *(..))"/>
+            <aop:after method="notifyChange" pointcut-ref="notify_pointcut"/>
+        </aop:aspect>
+        
+        <aop:aspect ref="sret_wrap_advice" order="1">
+            <!-- 此处需要手动填入 -->
+            <aop:pointcut id="sret_wrap_pointcut" expression="within(org.yecq.goleek.server.service.*) and 
+                execution(public org.yecq.baseframework.plain.service.Sret *(..))"/>
+            <aop:around method="wrapSret" pointcut-ref="sret_wrap_pointcut"/>
+        </aop:aspect>
+        
+        <aop:aspect ref="log_print_advice" order="1">
+            <!-- 此处需要手动填入 -->
+            <aop:pointcut id="log_print_pointcut" expression="within(org.yecq.goleek.server.web.controller.*) and
+                execution(@org.springframework.web.bind.annotation.RequestMapping public java.util.List *(..))"/>
+            <aop:around method="print" pointcut-ref="log_print_pointcut"/>
+        </aop:aspect>
+        
+        <aop:aspect ref="make_logged_advice" order="2">
+            <!-- 此处需要手动填入 -->
+            <aop:pointcut id="make_logged_pointcut" expression="within(org.yecq.goleek.server.web.controller.*) and
+                execution(@org.yecq.baseframework.web.MakeLogged * *(..))"/>
+            <aop:before method="addSession" pointcut-ref="make_logged_pointcut"/>
+        </aop:aspect>
+        
+        <aop:aspect ref="logged_advice" order="3">
+            <!-- 此处需要手动填入 -->
+            <aop:pointcut id="logged_pointcut" expression="within(org.yecq.goleek.server.web.controller.*) and
+                execution(@org.springframework.web.bind.annotation.RequestMapping public java.util.List *(..)) and
+                execution(@org.yecq.baseframework.web.Logged * *(..))"/>
+            <aop:before method="checkLogin" pointcut-ref="logged_pointcut"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
