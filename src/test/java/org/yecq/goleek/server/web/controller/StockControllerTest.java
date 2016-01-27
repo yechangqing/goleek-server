@@ -100,4 +100,18 @@ public class StockControllerTest extends IntegrateBase {
         assertThat(head.getStatus(), is("ok"));
     }
 
+    @Test
+    public void test_do_interestAll() {
+        List list = getJsonReturn("/stock/interest_all.go", null);
+        Head head = getHeader(list);
+        assertThat(head.getStatus(), is("ok"));
+    }
+
+    @Test
+    public void test_do_unInterestAll() {
+        List list = getJsonReturn("/stock/un_interest_all.go", null);
+        Head head = getHeader(list);
+        assertThat(head.getStatus(), is("ok"));
+    }
+
 }

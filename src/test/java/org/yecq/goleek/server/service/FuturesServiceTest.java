@@ -13,6 +13,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.yecq.baseframework.plain.core.Root;
 import org.yecq.baseframework.plain.service.Sret;
 import org.yecq.baseframework.test.Base;
 
@@ -139,5 +140,25 @@ public class FuturesServiceTest extends Base {
         FuturesUninterestBean bean = new FuturesUninterestBean("2");
         Sret sr = fs.unInterest(bean);
         assertThat(sr.isOk(), is(true));
+    }
+
+    @Test
+    public void test_interestAll() {
+        Sret sr = fs.interestAll();
+        assertThat(sr.isOk(), is(true));
+        List li = Root.getInstance().getSqlOperator().query("select * from futures where interest='y'");
+        assertThat(li.size(), is(3));
+        li = Root.getInstance().getSqlOperator().query("select * from futures where interest='n'");
+        assertThat(li.size(), is(0));
+    }
+
+    @Test
+    public void test_unInterestAll() {
+        Sret sr = fs.unInterestAll();
+        assertThat(sr.isOk(), is(true));
+        List li = Root.getInstance().getSqlOperator().query("select * from futures where interest='n'");
+        assertThat(li.size(), is(3));
+        li = Root.getInstance().getSqlOperator().query("select * from futures where interest='y'");
+        assertThat(li.size(), is(0));
     }
 }

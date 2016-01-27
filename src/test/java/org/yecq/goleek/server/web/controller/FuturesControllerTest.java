@@ -128,4 +128,18 @@ public class FuturesControllerTest extends IntegrateBase {
         Head head = getHeader(list);
         assertThat(head.getStatus(), is("ok"));
     }
+
+    @Test
+    public void test_do_interestAll() {
+        List list = getJsonReturn("/futures/interest_all.go");
+        Head head = getHeader(list);
+        assertThat(head.getStatus(), is("ok"));
+    }
+
+    @Test
+    public void test_do_unInterestAll() {
+        List list = getJsonReturn("/futures/un_interest_all.go");
+        Head head = getHeader(list);
+        assertThat(head.getStatus(), is("ok"));
+    }
 }
