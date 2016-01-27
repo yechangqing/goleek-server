@@ -12,6 +12,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.yecq.baseframework.plain.core.Root;
 import org.yecq.baseframework.plain.service.Sret;
 import org.yecq.baseframework.test.Base;
 
@@ -97,6 +98,26 @@ public class StockServiceTest extends Base {
         StockUninterestBean bean = new StockUninterestBean("2");
         Sret sr = ss.unInterest(bean);
         assertThat(sr.isOk(), is(true));
+    }
+
+    @Test
+    public void test_interestAll() {
+        Sret sr = ss.interestAll();
+        assertThat(sr.isOk(), is(true));
+        List li = Root.getInstance().getSqlOperator().query("select * from stock where interest='y'");
+        assertThat(li.size(), is(2));
+        li = Root.getInstance().getSqlOperator().query("select * from stock where interest='n'");
+        assertThat(li.size(), is(0));
+    }
+
+    @Test
+    public void test_unInterestAll() {
+        Sret sr = ss.unInterestAll();
+        assertThat(sr.isOk(), is(true));
+        List li = Root.getInstance().getSqlOperator().query("select * from stock where interest='n'");
+        assertThat(li.size(), is(2));
+        li = Root.getInstance().getSqlOperator().query("select * from stock where interest='y'");
+        assertThat(li.size(), is(0));
     }
 
 }

@@ -96,4 +96,20 @@ public class FuturesController extends ControllerBase {
         Sret sr = fs.unInterest(bean);
         return getRetList(sr);
     }
+
+    // v1.1增加，选择所有合约
+    @RequestMapping("interest_all.go")
+    @ResponseBody
+    public List do_interestAll() {
+        Sret sr = fs.interestAll();
+        return getRetList(sr);
+    }
+
+    // v1.1增加，取消所有
+    @RequestMapping("un_interest_all.go")
+    @ResponseBody
+    public List do_unInterestAll() {
+        Sret sr = fs.unInterestAll();
+        return getRetList(sr);
+    }
 }

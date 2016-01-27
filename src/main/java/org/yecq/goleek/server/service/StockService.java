@@ -10,6 +10,7 @@ import org.yecq.goleek.server.service.core.ObjectCreator;
 import org.yecq.goleek.server.service.core.Stock;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,4 +141,29 @@ public class StockService {
         return sr;
     }
 
+    // v1.1增加，选择所有的合约
+    public Sret interestAll() {
+        // 获得所有的合约
+        List<Stock> list = objs.getStockListAll();
+        Iterator<Stock> ite = list.iterator();
+        while (ite.hasNext()) {
+            ite.next().interest();
+        }
+        Sret sr = new Sret();
+        sr.setOk();
+        return sr;
+    }
+
+    // v1.1增加，取消选择所有的合约
+    public Sret unInterestAll() {
+        // 获得所有的合约
+        List<Stock> list = objs.getStockListAll();
+        Iterator<Stock> ite = list.iterator();
+        while (ite.hasNext()) {
+            ite.next().unInterest();
+        }
+        Sret sr = new Sret();
+        sr.setOk();
+        return sr;
+    }
 }
