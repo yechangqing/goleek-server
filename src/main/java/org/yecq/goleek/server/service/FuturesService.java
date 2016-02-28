@@ -139,6 +139,9 @@ public class FuturesService {
         if (modi.isUnit()) {
             hv.put("unit", modi.getUnit());
         }
+        if (modi.isInterest()) {
+            hv.put("interest", modi.getInterest());
+        }
         Futures f = new Futures(id);
         f.modify(hv);
         Sret sr = new Sret();

@@ -1,11 +1,11 @@
 package org.yecq.goleek.server.service;
 
+import com.jhhc.baseframework.test.Base;
+import com.jhhc.baseframework.web.core.Root;
+import com.jhhc.baseframework.web.service.Sret;
 import org.yecq.goleek.server.service.bean.param.FuturesAddBean;
 import org.yecq.goleek.server.service.bean.param.FuturesCloneBean;
-import org.yecq.goleek.server.service.bean.param.FuturesInterestBean;
 import org.yecq.goleek.server.service.bean.param.FuturesModifyBean;
-import org.yecq.goleek.server.service.bean.param.FuturesRemoveBean;
-import org.yecq.goleek.server.service.bean.param.FuturesUninterestBean;
 import org.yecq.goleek.server.service.bean.result.FuturesInfoBean;
 import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
@@ -13,9 +13,6 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.yecq.baseframework.plain.core.Root;
-import org.yecq.baseframework.plain.service.Sret;
-import org.yecq.baseframework.test.Base;
 
 /**
  *
@@ -96,49 +93,52 @@ public class FuturesServiceTest extends Base {
 
     @Test
     public void test_remove() {
-        FuturesRemoveBean bean = new FuturesRemoveBean("1");
-        Sret sr = fs.remove(bean);
+        Sret sr = fs.remove("1");
         assertThat(sr.isOk(), is(true));
     }
 
     @Test
     public void test_cloneItself() {
-        FuturesCloneBean bean = new FuturesCloneBean("1", "rb1612");
-        Sret sr = fs.cloneItself(bean);
+        FuturesCloneBean bean = new FuturesCloneBean();
+        bean.setNewCode("rb1612");
+        Sret sr = fs.cloneItself("1", bean);
         assertThat(sr.isOk(), is(true));
     }
 
     @Test
     public void test1_cloneItself() {
-        FuturesCloneBean bean = new FuturesCloneBean("1", "m1612");
-        Sret sr = fs.cloneItself(bean);
+        FuturesCloneBean bean = new FuturesCloneBean();
+        bean.setNewCode("m1612");
+        Sret sr = fs.cloneItself("1", bean);
         assertThat(sr.isFail(), is(true));
     }
 
     @Test
     public void test_modify() {
-        FuturesModifyBean bean = new FuturesModifyBean("1");
+        FuturesModifyBean bean = new FuturesModifyBean();
         bean.setCode("code");
         bean.setName("name");
         bean.setMargin(0.14);
         bean.setUnit(15);
         bean.setMin(0.01);
         bean.setExchange("大连商品");
-        Sret sr = fs.modify(bean);
+        Sret sr = fs.modify("1", bean);
         assertThat(sr.isOk(), is(true));
     }
 
     @Test
     public void test_interest() {
-        FuturesInterestBean bean = new FuturesInterestBean("1");
-        Sret sr = fs.interest(bean);
+        FuturesModifyBean bean = new FuturesModifyBean();
+        bean.setInterest("y");
+        Sret sr = fs.modify("1", bean);
         assertThat(sr.isOk(), is(true));
     }
 
     @Test
     public void test_unInterest() {
-        FuturesUninterestBean bean = new FuturesUninterestBean("2");
-        Sret sr = fs.unInterest(bean);
+        FuturesModifyBean bean = new FuturesModifyBean();
+        bean.setInterest("n");
+        Sret sr = fs.modify("2", bean);
         assertThat(sr.isOk(), is(true));
     }
 

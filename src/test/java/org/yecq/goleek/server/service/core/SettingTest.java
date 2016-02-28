@@ -1,5 +1,7 @@
 package org.yecq.goleek.server.service.core;
 
+import com.jhhc.baseframework.test.Base;
+import com.jhhc.baseframework.web.core.Root;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,8 +11,6 @@ import static org.hamcrest.Matchers.closeTo;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.yecq.baseframework.plain.core.Root;
-import org.yecq.baseframework.test.Base;
 
 /**
  *

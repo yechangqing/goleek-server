@@ -1,20 +1,13 @@
 package org.yecq.goleek.server.web.controller;
 
-import org.yecq.goleek.server.service.bean.param.TradeSettingSaveBean;
-import org.yecq.goleek.server.service.bean.result.TradeSettingInfoBean;
-import java.util.List;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import org.junit.Test;
-import org.yecq.baseframework.test.IntegrateBase;
-import org.yecq.baseframework.web.Head;
+import com.jhhc.baseframework.test.IntegrateRestfulBase;
 
 /**
  *
  * @author yecq
  */
-public class TradeSettingControllerTest extends IntegrateBase {
-
+public class TradeSettingControllerTest extends IntegrateRestfulBase {
+/*
     @Test
     public void test_do_getDefault() {
         List list = getJsonReturn("/trade_setting/get_default.go");
@@ -33,4 +26,5 @@ public class TradeSettingControllerTest extends IntegrateBase {
         Head head = getHeader(list);
         assertThat(head.getStatus(), is("ok"));
     }
+*/
 }

@@ -1,5 +1,8 @@
 package org.yecq.goleek.server.service;
 
+import com.jhhc.baseframework.test.Base;
+import com.jhhc.baseframework.web.core.Root;
+import com.jhhc.baseframework.web.service.Sret;
 import org.yecq.goleek.server.service.bean.param.StockAddBean;
 import org.yecq.goleek.server.service.bean.param.StockInterestBean;
 import org.yecq.goleek.server.service.bean.param.StockModifyBean;
@@ -12,9 +15,6 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.yecq.baseframework.plain.core.Root;
-import org.yecq.baseframework.plain.service.Sret;
-import org.yecq.baseframework.test.Base;
 
 /**
  *

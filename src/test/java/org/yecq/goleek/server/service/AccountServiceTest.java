@@ -1,10 +1,9 @@
 package org.yecq.goleek.server.service;
 
+import com.jhhc.baseframework.test.Base;
+import com.jhhc.baseframework.web.service.Sret;
 import org.yecq.goleek.server.service.bean.param.AccountAddBean;
 import org.yecq.goleek.server.service.bean.param.AccountModifyBean;
-import org.yecq.goleek.server.service.bean.param.AccountRemoveBean;
-import org.yecq.goleek.server.service.bean.param.AccountUnuseBean;
-import org.yecq.goleek.server.service.bean.param.AccountUseBean;
 import org.yecq.goleek.server.service.bean.result.AccountFuturesInfoBean;
 import org.yecq.goleek.server.service.bean.result.AccountStockInfoBean;
 import org.yecq.goleek.server.service.core.Account;
@@ -15,8 +14,6 @@ import static org.hamcrest.Matchers.closeTo;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.yecq.baseframework.plain.service.Sret;
-import org.yecq.baseframework.test.Base;
 
 /**
  *
@@ -86,14 +83,14 @@ public class AccountServiceTest extends Base {
 
     @Test
     public void test_modify() {
-        AccountModifyBean bean = new AccountModifyBean("1");
+        AccountModifyBean bean = new AccountModifyBean();
         bean.setCode("1234");
         bean.setCompany("割韭菜");
         bean.setMoney(3200000);
         bean.setUsed("n");
-        Sret sr = as.modify(bean);
+        Sret sr = as.modify("1", bean);
         assertThat(sr.isOk(), is(true));
-        Account acc = new Account(bean.getId());
+        Account acc = new Account("1");
         assertThat(acc.getInfo("code") + "", is("1234"));
         assertThat(acc.getInfo("company") + "", is("割韭菜"));
         assertThat(Double.parseDouble(acc.getInfo("money") + ""), closeTo(3200000, 0.1));
@@ -102,22 +99,23 @@ public class AccountServiceTest extends Base {
 
     @Test
     public void test_remove() {
-        AccountRemoveBean bean = new AccountRemoveBean("1");
-        Sret sr = as.remove(bean);
+        Sret sr = as.remove("1");
         assertThat(sr.isOk(), is(true));
     }
 
     @Test
     public void test_use() {
-        AccountUseBean bean = new AccountUseBean("2");
-        Sret sr = as.use(bean);
+        AccountModifyBean bean = new AccountModifyBean();
+        bean.setUsed("y");;
+        Sret sr = as.modify("2", bean);
         assertThat(sr.isOk(), is(true));
     }
 
     @Test
     public void test_unUse() {
-        AccountUnuseBean bean = new AccountUnuseBean("1");
-        Sret sr = as.unUse(bean);
+        AccountModifyBean bean = new AccountModifyBean();
+        bean.setUsed("n");;
+        Sret sr = as.modify("1", bean);
         assertThat(sr.isOk(), is(true));
     }
 

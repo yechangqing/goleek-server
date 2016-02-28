@@ -1,5 +1,7 @@
 package org.yecq.goleek.server.service;
 
+import com.jhhc.baseframework.test.Base;
+import com.jhhc.baseframework.web.service.Sret;
 import org.yecq.goleek.server.service.bean.param.PositionFuturesActionsBean;
 import org.yecq.goleek.server.service.bean.param.PositionFuturesEditBean;
 import org.yecq.goleek.server.service.bean.param.PositionFuturesOpenBean;
@@ -13,8 +15,6 @@ import static org.hamcrest.Matchers.closeTo;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.yecq.baseframework.plain.service.Sret;
-import org.yecq.baseframework.test.Base;
 
 /**
  *
