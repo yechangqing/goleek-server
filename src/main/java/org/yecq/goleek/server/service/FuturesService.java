@@ -1,11 +1,9 @@
 package org.yecq.goleek.server.service;
 
+import com.jhhc.baseframework.web.service.Sret;
 import org.yecq.goleek.server.service.bean.param.FuturesAddBean;
 import org.yecq.goleek.server.service.bean.param.FuturesCloneBean;
-import org.yecq.goleek.server.service.bean.param.FuturesInterestBean;
 import org.yecq.goleek.server.service.bean.param.FuturesModifyBean;
-import org.yecq.goleek.server.service.bean.param.FuturesRemoveBean;
-import org.yecq.goleek.server.service.bean.param.FuturesUninterestBean;
 import org.yecq.goleek.server.service.bean.result.FuturesInfoBean;
 import org.yecq.goleek.server.service.core.Futures;
 import org.yecq.goleek.server.service.core.ObjectCreator;
@@ -17,7 +15,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.yecq.baseframework.plain.service.Sret;
 
 /**
  *
@@ -103,8 +100,8 @@ public class FuturesService {
     }
 
     // 删除
-    public Sret remove(FuturesRemoveBean rem) {
-        Futures f = new Futures(rem.getId());
+    public Sret remove(String id) {
+        Futures f = new Futures(id);
         f.remove();
         Sret sr = new Sret();
         sr.setOk();
@@ -112,17 +109,17 @@ public class FuturesService {
     }
 
     // 克隆
-    public Sret cloneItself(FuturesCloneBean clo) {
-        Futures f = new Futures(clo.getId());
-        String id = f.cloneItself(clo.getNewCode()).getId();
+    public Sret cloneItself(String id, FuturesCloneBean clo) {
+        Futures f = new Futures(id);
+        String id1 = f.cloneItself(clo.getNewCode()).getId();
         Sret sr = new Sret();
         sr.setOk();
-        sr.setData(id);
+        sr.setData(id1);
         return sr;
     }
 
     // 修改
-    public Sret modify(FuturesModifyBean modi) {
+    public Sret modify(String id, FuturesModifyBean modi) {
         Map hv = new HashMap();
         if (modi.isCode()) {
             hv.put("code", modi.getCode());
@@ -142,26 +139,8 @@ public class FuturesService {
         if (modi.isUnit()) {
             hv.put("unit", modi.getUnit());
         }
-        Futures f = new Futures(modi.getId());
+        Futures f = new Futures(id);
         f.modify(hv);
-        Sret sr = new Sret();
-        sr.setOk();
-        return sr;
-    }
-
-    // 关注
-    public Sret interest(FuturesInterestBean bean) {
-        Futures f = new Futures(bean.getId());
-        f.interest();
-        Sret sr = new Sret();
-        sr.setOk();
-        return sr;
-    }
-
-    // 取消关注
-    public Sret unInterest(FuturesUninterestBean bean) {
-        Futures f = new Futures(bean.getId());
-        f.unInterest();
         Sret sr = new Sret();
         sr.setOk();
         return sr;

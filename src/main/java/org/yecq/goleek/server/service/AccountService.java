@@ -1,10 +1,8 @@
 package org.yecq.goleek.server.service;
 
+import com.jhhc.baseframework.web.service.Sret;
 import org.yecq.goleek.server.service.bean.param.AccountAddBean;
 import org.yecq.goleek.server.service.bean.param.AccountModifyBean;
-import org.yecq.goleek.server.service.bean.param.AccountRemoveBean;
-import org.yecq.goleek.server.service.bean.param.AccountUnuseBean;
-import org.yecq.goleek.server.service.bean.param.AccountUseBean;
 import org.yecq.goleek.server.service.bean.result.AccountFuturesInfoBean;
 import org.yecq.goleek.server.service.bean.result.AccountStockInfoBean;
 import org.yecq.goleek.server.service.core.Account;
@@ -16,7 +14,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.yecq.baseframework.plain.service.Sret;
 
 /**
  *
@@ -100,7 +97,7 @@ public class AccountService {
     }
 
     // 修改
-    public Sret modify(AccountModifyBean modi) {
+    public Sret modify(String id, AccountModifyBean modi) {
         Map hv1 = new HashMap();
         if (modi.isCode()) {
             hv1.put("code", modi.getCode());
@@ -114,7 +111,7 @@ public class AccountService {
         if (modi.isUsed()) {
             hv1.put("used", modi.getUsed());
         }
-        Account acc = new Account(modi.getId());
+        Account acc = new Account(id);
         acc.modify(hv1);
         Sret sr = new Sret();
         sr.setOk();
@@ -122,27 +119,9 @@ public class AccountService {
     }
 
     // 删除
-    public Sret remove(AccountRemoveBean rem) {
-        Account acc = new Account(rem.getId());
+    public Sret remove(String id) {
+        Account acc = new Account(id);
         acc.remove();
-        Sret sr = new Sret();
-        sr.setOk();
-        return sr;
-    }
-
-    // 标记使用
-    public Sret use(AccountUseBean use) {
-        Account acc = new Account(use.getId());
-        acc.use();
-        Sret sr = new Sret();
-        sr.setOk();
-        return sr;
-    }
-
-    // 标记取消使用
-    public Sret unUse(AccountUnuseBean use) {
-        Account acc = new Account(use.getId());
-        acc.unUse();
         Sret sr = new Sret();
         sr.setOk();
         return sr;

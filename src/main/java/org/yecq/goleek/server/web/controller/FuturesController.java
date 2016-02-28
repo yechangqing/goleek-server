@@ -3,113 +3,84 @@ package org.yecq.goleek.server.web.controller;
 import org.yecq.goleek.server.service.FuturesService;
 import org.yecq.goleek.server.service.bean.param.FuturesAddBean;
 import org.yecq.goleek.server.service.bean.param.FuturesCloneBean;
-import org.yecq.goleek.server.service.bean.param.FuturesInterestBean;
 import org.yecq.goleek.server.service.bean.param.FuturesModifyBean;
-import org.yecq.goleek.server.service.bean.param.FuturesRemoveBean;
-import org.yecq.goleek.server.service.bean.param.FuturesUninterestBean;
 import com.google.gson.Gson;
-import java.util.List;
+import com.jhhc.baseframework.web.controller.restful.RestfulControllerBase;
+import com.jhhc.baseframework.web.service.Sret;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.yecq.baseframework.plain.service.Sret;
-import org.yecq.baseframework.web.ControllerBase;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
  * @author yecq
  */
-@Controller
-@RequestMapping("/futures/")
-public class FuturesController extends ControllerBase {
+@RestController
+public class FuturesController extends RestfulControllerBase {
 
     @Autowired
     private FuturesService fs;
 
-    @RequestMapping("get_exchange_names.go")
-    @ResponseBody
-    public List do_getExchangeNames() {
+    @RequestMapping(value = {"/exchange_names"}, method = RequestMethod.GET)
+    public Object do_getExchangeNames(HttpServletRequest request) {
         Sret sr = fs.getExchangeNames();
-        return getRetList(sr);
+        return sr;
     }
 
-    @RequestMapping("get_list_all.go")
-    @ResponseBody
-    public List do_getListAll() {
+    @RequestMapping(value = {"/futures"}, method = RequestMethod.GET)
+    public Object do_getList(HttpServletRequest request) {
         Sret sr = fs.getListAll();
-        return getRetList(sr);
+        return sr;
     }
 
-    @RequestMapping("get_list_interested.go")
-    @ResponseBody
-    public List do_getListInterested() {
+    @RequestMapping(value = {"futures_interested"}, method = RequestMethod.GET)
+    public Object do_getListInterested(HttpServletRequest request) {
         Sret sr = fs.getListInterested();
-        return getRetList(sr);
+        return sr;
     }
 
-    @RequestMapping("add.go")
-    @ResponseBody
-    public List do_add(@RequestParam("json") String json) {
+    @RequestMapping(value = {"/futures"}, method = RequestMethod.POST)
+    public Object do_add(@RequestParam("json") String json, HttpServletRequest request) {
         FuturesAddBean bean = new Gson().fromJson(json, FuturesAddBean.class);
         Sret sr = fs.add(bean);
-        return getRetList(sr);
+        return sr;
     }
 
-    @RequestMapping("remove.go")
-    @ResponseBody
-    public List do_remove(@RequestParam("json") String json) {
-        FuturesRemoveBean bean = new Gson().fromJson(json, FuturesRemoveBean.class);
-        Sret sr = fs.remove(bean);
-        return getRetList(sr);
+    @RequestMapping(value = {"/futures/{id}"}, method = RequestMethod.DELETE)
+    public Object do_remove(@PathVariable("id") String id, HttpServletRequest request) {
+        Sret sr = fs.remove(id);
+        return sr;
     }
 
-    @RequestMapping("clone.go")
-    @ResponseBody
-    public List do_cloneItself(@RequestParam("json") String json) {
+    @RequestMapping(value = {"/futures/{id}"}, method = RequestMethod.POST)
+    public Object do_cloneItself(@PathVariable("id") String id, @RequestParam("json") String json, HttpServletRequest request) {
         FuturesCloneBean bean = new Gson().fromJson(json, FuturesCloneBean.class);
-        Sret sr = fs.cloneItself(bean);
-        return getRetList(sr);
+        Sret sr = fs.cloneItself(id, bean);
+        return sr;
     }
 
-    @RequestMapping("modify.go")
-    @ResponseBody
-    public List do_modify(@RequestParam("json") String json) {
+    @RequestMapping(value = {"/futures/{id}"}, method = RequestMethod.PUT)
+    public Object do_modify(@PathVariable("id") String id, @RequestParam("json") String json, HttpServletRequest request) {
         FuturesModifyBean bean = new Gson().fromJson(json, FuturesModifyBean.class);
-        Sret sr = fs.modify(bean);
-        return getRetList(sr);
+        Sret sr = fs.modify(id, bean);
+        return sr;
     }
 
-    @RequestMapping("interest.go")
-    @ResponseBody
-    public List do_interest(@RequestParam("json") String json) {
-        FuturesInterestBean bean = new Gson().fromJson(json, FuturesInterestBean.class);
-        Sret sr = fs.interest(bean);
-        return getRetList(sr);
-    }
-
-    @RequestMapping("un_interest.go")
-    @ResponseBody
-    public List do_unInterest(@RequestParam("json") String json) {
-        FuturesUninterestBean bean = new Gson().fromJson(json, FuturesUninterestBean.class);
-        Sret sr = fs.unInterest(bean);
-        return getRetList(sr);
-    }
-
-    // v1.1增加，选择所有合约
-    @RequestMapping("interest_all.go")
-    @ResponseBody
-    public List do_interestAll() {
-        Sret sr = fs.interestAll();
-        return getRetList(sr);
-    }
-
-    // v1.1增加，取消所有
-    @RequestMapping("un_interest_all.go")
-    @ResponseBody
-    public List do_unInterestAll() {
-        Sret sr = fs.unInterestAll();
-        return getRetList(sr);
+    // v1.1增加，选择所有和取消选择合约
+    @RequestMapping(value = {"/futures_interest"}, method = RequestMethod.PUT)
+    public Object do_interestAll(@RequestParam("action") String action, HttpServletRequest request) {
+        if (action.equalsIgnoreCase("select")) {
+            return fs.interestAll();
+        } else if (action.equalsIgnoreCase("unselect")) {
+            return fs.unInterestAll();
+        } else {
+            Sret sr = new Sret();
+            sr.setError("错误的参数值action");
+            return sr;
+        }
     }
 }

@@ -17,53 +17,28 @@
                            http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
                            http://www.springframework.org/schema/aop 
                            http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
-
-    <mvc:annotation-driven/>
+    
     <context:component-scan base-package="org.yecq.goleek.server.web.controller"/>
     
-    <!-- 配置aop，dispatcher里的配置需要重新配一遍 -->
+    <mvc:annotation-driven>
+        <!-- 消息编码为utf-8 -->
+        <mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes" value="text/html;charset=UTF-8"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <mvc:default-servlet-handler/>
     <aop:aspectj-autoproxy/>
     
-    <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
-
-    <!--
-    Most controllers will use the ControllerClassNameHandlerMapping above, but
-    for the index controller we are using ParameterizableViewController, so we must
-    define an explicit mapping for it.
-    -->
-    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-        <property name="mappings">
-            <props>
-                <prop key="index.htm">indexController</prop>
-            </props>
-        </property>
-    </bean>
-
-    <!--
-<bean id="viewResolver"
-    class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-    p:prefix="/WEB-INF/jsp/"
-    p:suffix=".jsp" />
-    -->
-    
-    <bean id="viewResolver"
-          class="org.springframework.web.servlet.view.InternalResourceViewResolver" 
-          p:prefix="/" p:suffix=".jsp"
-    />
-
-    <!--
-    The index controller.
-    -->
-    <bean name="indexController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="index" />
-    
-    <!-- 配置文件上传，需要apache commons io包和FileUpload包-->
-    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
-          p:defaultEncoding="utf-8" >
+    <!-- 定义jsp解析器 -->
+    <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
     </bean>
     
-    <!-- 配置返回json -->
+    <!-- json解析器 -->
     <bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
         <property name="supportedMediaTypes">
             <list>
@@ -72,4 +47,9 @@
             </list>
         </property>
     </bean> 
+    
+    <!-- 配置文件上传，需要apache commons io包和FileUpload包-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+          p:defaultEncoding="utf-8" p:maxUploadSize="500000" />
+    
 </beans>

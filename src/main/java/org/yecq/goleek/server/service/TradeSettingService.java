@@ -1,5 +1,6 @@
 package org.yecq.goleek.server.service;
 
+import com.jhhc.baseframework.web.service.Sret;
 import org.yecq.goleek.server.service.bean.param.TradeSettingSaveBean;
 import org.yecq.goleek.server.service.bean.result.TradeSettingInfoBean;
 import org.yecq.goleek.server.service.core.Setting;
@@ -8,7 +9,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.yecq.baseframework.plain.service.Sret;
 
 /**
  *

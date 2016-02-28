@@ -7,76 +7,68 @@ import org.yecq.goleek.server.service.bean.param.PositionFuturesDeleteBean;
 import org.yecq.goleek.server.service.bean.param.PositionFuturesEditBean;
 import org.yecq.goleek.server.service.bean.param.PositionFuturesOpenBean;
 import com.google.gson.Gson;
-import java.util.List;
+import com.jhhc.baseframework.web.controller.restful.RestfulControllerBase;
+import com.jhhc.baseframework.web.service.Sret;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.yecq.baseframework.plain.service.Sret;
-import org.yecq.baseframework.web.ControllerBase;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
  * @author yecq
  */
-@Controller
+@RestController
 @RequestMapping("/position_futures/")
-public class PositionFuturesController extends ControllerBase {
+public class PositionFuturesController extends RestfulControllerBase {
 
     @Autowired
     private PositionFuturesService ps;
 
     // 获取所有持仓
     @RequestMapping("get_list_all.go")
-    @ResponseBody
-    public List do_getListAll() {
+    public Object do_getListAll(HttpServletRequest request) {
         Sret sr = ps.getListAll();
-        return getRetList(sr);
+        return sr;
     }
 
     // 编辑退出条件
     @RequestMapping("edit_quit.go")
-    @ResponseBody
-    public List do_editQuit(@RequestParam("json") String json) {
-        PositionFuturesEditBean bean = new Gson().fromJson(json, PositionFuturesEditBean.class);
+    public Object do_editQuit(HttpServletRequest request) {
+        PositionFuturesEditBean bean = new Gson().fromJson(request.getParameter("json"), PositionFuturesEditBean.class);
         Sret sr = ps.editQuit(bean);
-        return getRetList(sr);
+        return sr;
     }
 
     // 开仓
     @RequestMapping("open.go")
-    @ResponseBody
-    public List do_open(@RequestParam("json") String json) {
-        PositionFuturesOpenBean bean = new Gson().fromJson(json, PositionFuturesOpenBean.class);
+    public Object do_open(HttpServletRequest request) {
+        PositionFuturesOpenBean bean = new Gson().fromJson(request.getParameter("json"), PositionFuturesOpenBean.class);
         Sret sr = ps.open(bean);
-        return getRetList(sr);
+        return sr;
     }
 
     // 平仓
     @RequestMapping("close.go")
-    @ResponseBody
-    public List do_close(@RequestParam("json") String json) {
-        PositionFuturesCloseBean bean = new Gson().fromJson(json, PositionFuturesCloseBean.class);
+    public Object do_close(HttpServletRequest request) {
+        PositionFuturesCloseBean bean = new Gson().fromJson(request.getParameter("json"), PositionFuturesCloseBean.class);
         Sret sr = ps.close(bean);
-        return getRetList(sr);
+        return sr;
     }
 
     // 删除
     @RequestMapping("delete.go")
-    @ResponseBody
-    public List do_delete(@RequestParam("json") String json) {
-        PositionFuturesDeleteBean bean = new Gson().fromJson(json, PositionFuturesDeleteBean.class);
+    public Object do_delete(HttpServletRequest request) {
+        PositionFuturesDeleteBean bean = new Gson().fromJson(request.getParameter("json"), PositionFuturesDeleteBean.class);
         Sret sr = ps.delete(bean);
-        return getRetList(sr);
+        return sr;
     }
 
     // 获取离场动作列表
     @RequestMapping("get_actions.go")
-    @ResponseBody
-    public List do_getActions(@RequestParam("json") String json) {
-        PositionFuturesActionsBean bean = new Gson().fromJson(json, PositionFuturesActionsBean.class);
+    public Object do_getActions(HttpServletRequest request) {
+        PositionFuturesActionsBean bean = new Gson().fromJson(request.getParameter("json"), PositionFuturesActionsBean.class);
         Sret sr = ps.getActions(bean);
-        return getRetList(sr);
+        return sr;
     }
 }

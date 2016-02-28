@@ -2,6 +2,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
+    <description>
+        1、服务器2.0版本开始采用REST风格，客户端也升级到2.0版本
+        2、增加网页客户端，试着用EasyUI来做
+    </description>
+    
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -10,7 +15,7 @@
 
     <groupId>org.yecq.goleek</groupId>
     <artifactId>goleek-server</artifactId>
-    <version>1.1</version>
+    <version>2.0</version>
     <packaging>war</packaging>
 
     <name>${artifactId}-${version}</name>
@@ -25,7 +30,7 @@
         
         <!-- 这个应该是可以兼容sae上的1.7的 -->
         <dependency>
-            <groupId>org.yecq.baseframework</groupId>
+            <groupId>com.jhhc.baseframework</groupId>
             <artifactId>baseframework-web</artifactId>
             <version>1.0</version>
         </dependency>
@@ -38,7 +43,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.yecq.baseframework</groupId>
+            <groupId>com.jhhc.baseframework</groupId>
             <artifactId>baseframework-test</artifactId>
             <version>1.0</version>
             <scope>test</scope>

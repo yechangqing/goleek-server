@@ -1,5 +1,6 @@
 package org.yecq.goleek.server.service;
 
+import com.jhhc.baseframework.web.service.Sret;
 import org.yecq.goleek.server.service.bean.param.StockAddBean;
 import org.yecq.goleek.server.service.bean.param.StockInterestBean;
 import org.yecq.goleek.server.service.bean.param.StockModifyBean;
@@ -16,7 +17,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.yecq.baseframework.plain.service.Sret;
 
 /**
  *

@@ -7,100 +7,88 @@ import org.yecq.goleek.server.service.bean.param.StockModifyBean;
 import org.yecq.goleek.server.service.bean.param.StockRemoveBean;
 import org.yecq.goleek.server.service.bean.param.StockUninterestBean;
 import com.google.gson.Gson;
-import java.util.List;
+import com.jhhc.baseframework.web.controller.restful.RestfulControllerBase;
+import com.jhhc.baseframework.web.service.Sret;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.yecq.baseframework.plain.service.Sret;
-import org.yecq.baseframework.web.ControllerBase;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
  * @author yecq
  */
-@Controller
+@RestController
 @RequestMapping("/stock/")
-public class StockController extends ControllerBase {
+public class StockController extends RestfulControllerBase {
 
     @Autowired
     private StockService ss;
 
     @RequestMapping("get_exchange_names.go")
-    @ResponseBody
-    public List do_getExchangeNames() {
+    public Object do_getExchangeNames(HttpServletRequest request) {
         Sret sr = ss.getExchangeNames();
-        return getRetList(sr);
+        return sr;
     }
 
     @RequestMapping("get_list_all.go")
-    @ResponseBody
-    public List do_getListAll() {
+    public Object do_getListAll(HttpServletRequest request) {
         Sret sr = ss.getListAll();
-        return getRetList(sr);
+        return sr;
     }
 
     @RequestMapping("get_list_interested.go")
-    @ResponseBody
-    public List do_getListInterested() {
+    public Object do_getListInterested(HttpServletRequest request) {
         Sret sr = ss.getListInterested();
-        return getRetList(sr);
+        return sr;
     }
 
     @RequestMapping("add.go")
-    @ResponseBody
-    public List do_add(@RequestParam("json") String json) {
-        StockAddBean bean = new Gson().fromJson(json, StockAddBean.class);
+    public Object do_add(HttpServletRequest request) {
+        StockAddBean bean = new Gson().fromJson(request.getParameter("json"), StockAddBean.class);
         Sret sr = ss.add(bean);
-        return getRetList(sr);
+        return sr;
     }
 
     @RequestMapping("remove.go")
-    @ResponseBody
-    public List do_remove(@RequestParam("json") String json) {
-        StockRemoveBean bean = new Gson().fromJson(json, StockRemoveBean.class);
+    public Object do_remove(HttpServletRequest request) {
+        StockRemoveBean bean = new Gson().fromJson(request.getParameter("json"), StockRemoveBean.class);
         Sret sr = ss.remove(bean);
-        return getRetList(sr);
+        return sr;
     }
 
     @RequestMapping("modify.go")
-    @ResponseBody
-    public List do_modify(@RequestParam("json") String json) {
-        StockModifyBean bean = new Gson().fromJson(json, StockModifyBean.class);
+    public Object do_modify(HttpServletRequest request) {
+        StockModifyBean bean = new Gson().fromJson(request.getParameter("json"), StockModifyBean.class);
         Sret sr = ss.modify(bean);
-        return getRetList(sr);
+        return sr;
     }
 
     @RequestMapping("interest.go")
-    @ResponseBody
-    public List do_interest(@RequestParam("json") String json) {
-        StockInterestBean bean = new Gson().fromJson(json, StockInterestBean.class);
+    public Object do_interest(HttpServletRequest request) {
+        StockInterestBean bean = new Gson().fromJson(request.getParameter("json"), StockInterestBean.class);
         Sret sr = ss.interest(bean);
-        return getRetList(sr);
+        return sr;
     }
 
     @RequestMapping("un_interest.go")
-    @ResponseBody
-    public List do_unInterest(@RequestParam("json") String json) {
-        StockUninterestBean bean = new Gson().fromJson(json, StockUninterestBean.class);
+    public Object do_unInterest(HttpServletRequest request) {
+        StockUninterestBean bean = new Gson().fromJson(request.getParameter("json"), StockUninterestBean.class);
         Sret sr = ss.unInterest(bean);
-        return getRetList(sr);
+        return sr;
     }
 
     // v1.1增加，选择所有合约
     @RequestMapping("interest_all.go")
-    @ResponseBody
-    public List do_interestAll() {
+    public Object do_interestAll(HttpServletRequest request) {
         Sret sr = ss.interestAll();
-        return getRetList(sr);
+        return sr;
     }
 
     // v1.1增加，取消所有
     @RequestMapping("un_interest_all.go")
-    @ResponseBody
-    public List do_unInterestAll() {
+    public Object do_unInterestAll(HttpServletRequest request) {
         Sret sr = ss.unInterestAll();
-        return getRetList(sr);
+        return sr;
     }
 }

@@ -1,13 +1,13 @@
 package org.yecq.goleek.server.service.core;
 
+import com.jhhc.baseframework.record.Record;
+import com.jhhc.baseframework.record.SqlOperator;
+import com.jhhc.baseframework.web.core.CoreSelector;
+import com.jhhc.baseframework.web.core.CoreView;
+import com.jhhc.baseframework.web.core.Root;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.yecq.baseframework.plain.core.CoreSelector;
-import org.yecq.baseframework.plain.core.CoreView;
-import org.yecq.baseframework.plain.core.Root;
-import org.yecq.record.Record;
-import org.yecq.record.SqlOperator;
 
 /**
  *

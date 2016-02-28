@@ -1,11 +1,11 @@
 package org.yecq.goleek.server.service.core;
 
+import com.jhhc.baseframework.web.core.CoreSelector;
+import com.jhhc.baseframework.web.core.CoreTable;
+import com.jhhc.baseframework.web.core.Root;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.yecq.baseframework.plain.core.CoreSelector;
-import org.yecq.baseframework.plain.core.CoreTable;
-import org.yecq.baseframework.plain.core.Root;
 
 /**
  *
