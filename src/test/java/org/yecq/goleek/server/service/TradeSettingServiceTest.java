@@ -30,7 +30,7 @@ public class TradeSettingServiceTest extends Base {
 
     @Test
     public void test_saveDefault() {
-        TradeSettingSaveBean modi = new TradeSettingSaveBean("1", 0.5, 0.03);
+        TradeSettingSaveBean modi = new TradeSettingSaveBean(0.5, 0.03);
         Sret sr = ts.saveDefault(modi);
         assertThat(sr.isOk(), is(true));
     }

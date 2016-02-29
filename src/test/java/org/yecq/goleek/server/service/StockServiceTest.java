@@ -4,10 +4,7 @@ import com.jhhc.baseframework.test.Base;
 import com.jhhc.baseframework.web.core.Root;
 import com.jhhc.baseframework.web.service.Sret;
 import org.yecq.goleek.server.service.bean.param.StockAddBean;
-import org.yecq.goleek.server.service.bean.param.StockInterestBean;
 import org.yecq.goleek.server.service.bean.param.StockModifyBean;
-import org.yecq.goleek.server.service.bean.param.StockRemoveBean;
-import org.yecq.goleek.server.service.bean.param.StockUninterestBean;
 import org.yecq.goleek.server.service.bean.result.StockInfoBean;
 import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
@@ -70,33 +67,18 @@ public class StockServiceTest extends Base {
 
     @Test
     public void test_remove() {
-        StockRemoveBean bean = new StockRemoveBean("1");
-        Sret sr = ss.remove(bean);
+        Sret sr = ss.remove("1");
         assertThat(sr.isOk(), is(true));
     }
 
     @Test
     public void test_modify() {
-        StockModifyBean bean = new StockModifyBean("2");
+        StockModifyBean bean = new StockModifyBean();
         bean.setCode("233456");
         bean.setExchange("上海证券");
         bean.setInterest("y");
         bean.setName("春风科技");
-        Sret sr = ss.modify(bean);
-        assertThat(sr.isOk(), is(true));
-    }
-
-    @Test
-    public void interest() {
-        StockInterestBean bean = new StockInterestBean("1");
-        Sret sr = ss.interest(bean);
-        assertThat(sr.isOk(), is(true));
-    }
-
-    @Test
-    public void test_unInterest() {
-        StockUninterestBean bean = new StockUninterestBean("2");
-        Sret sr = ss.unInterest(bean);
+        Sret sr = ss.modify("2", bean);
         assertThat(sr.isOk(), is(true));
     }
 

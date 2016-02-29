@@ -2,7 +2,6 @@ package org.yecq.goleek.server.service;
 
 import com.jhhc.baseframework.web.service.Sret;
 import org.yecq.goleek.server.service.bean.param.PositionStockCloseBean;
-import org.yecq.goleek.server.service.bean.param.PositionStockDeleteBean;
 import org.yecq.goleek.server.service.bean.param.PositionStockEditBean;
 import org.yecq.goleek.server.service.bean.param.PositionStockOpenBean;
 import org.yecq.goleek.server.service.bean.result.PositionStockInfoBean;
@@ -53,8 +52,8 @@ public class PositionStockService {
     }
 
     // 编辑退出条件
-    public Sret editQuit(PositionStockEditBean bean) {
-        PositionStock p = new PositionStock(bean.getId());
+    public Sret editQuit(String id, PositionStockEditBean bean) {
+        PositionStock p = new PositionStock(id);
         p.setActionAndQuitPrice(bean.getAction(), bean.getPrice());
         Sret sr = new Sret();
         sr.setOk();
@@ -77,19 +76,19 @@ public class PositionStockService {
     }
 
     // 平仓
-    public Sret close(PositionStockCloseBean bean) {
+    public Sret close(String id, PositionStockCloseBean bean) {
         int lot = bean.getLot();
         double price = bean.getPrice();
         String date = bean.getDate();
-        new PositionStock(bean.getId()).close(lot, price, date);
+        new PositionStock(id).close(lot, price, date);
         Sret sr = new Sret();
         sr.setOk();
         return sr;
     }
 
     // 删除
-    public Sret delete(PositionStockDeleteBean bean) {
-        new PositionStock(bean.getId()).delete();
+    public Sret delete(String id) {
+        new PositionStock(id).delete();
         Sret sr = new Sret();
         sr.setOk();
         return sr;

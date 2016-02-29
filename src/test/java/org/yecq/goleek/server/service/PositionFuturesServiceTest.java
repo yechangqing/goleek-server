@@ -38,8 +38,8 @@ public class PositionFuturesServiceTest extends Base {
 
     @Test
     public void test_editQuit() {
-        PositionFuturesEditBean bean = new PositionFuturesEditBean("1", "买入平仓 <=", 3001);
-        Sret sr = ps.editQuit(bean);
+        PositionFuturesEditBean bean = new PositionFuturesEditBean("买入平仓 <=", 3001);
+        Sret sr = ps.editQuit("1", bean);
         assertThat(sr.isOk(), is(true));
     }
 

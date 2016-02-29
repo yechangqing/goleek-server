@@ -3,7 +3,6 @@ package org.yecq.goleek.server.service;
 import com.jhhc.baseframework.test.Base;
 import com.jhhc.baseframework.web.service.Sret;
 import org.yecq.goleek.server.service.bean.param.PositionStockCloseBean;
-import org.yecq.goleek.server.service.bean.param.PositionStockDeleteBean;
 import org.yecq.goleek.server.service.bean.param.PositionStockEditBean;
 import org.yecq.goleek.server.service.bean.param.PositionStockOpenBean;
 import java.util.List;
@@ -31,7 +30,7 @@ public class PositionStockServiceTest extends Base {
 
     @Test
     public void test_editQuit() {
-        Sret sr = ps.editQuit(new PositionStockEditBean("1", "卖出 >=", 34));
+        Sret sr = ps.editQuit("1", new PositionStockEditBean("卖出 >=", 34));
         assertThat(sr.isOk(), is(true));
     }
 
@@ -50,13 +49,13 @@ public class PositionStockServiceTest extends Base {
 
     @Test
     public void test_close() {
-        Sret sr = ps.close(new PositionStockCloseBean("1", 2, 45, "2015-10-13"));
+        Sret sr = ps.close("1", new PositionStockCloseBean(2, 45, "2015-10-13"));
         assertThat(sr.isOk(), is(true));
     }
 
     @Test
     public void test_delete() {
-        Sret sr = ps.delete(new PositionStockDeleteBean("2"));
+        Sret sr = ps.delete("2");
         assertThat(sr.isOk(), is(true));
     }
 

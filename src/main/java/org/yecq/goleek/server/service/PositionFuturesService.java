@@ -3,7 +3,6 @@ package org.yecq.goleek.server.service;
 import com.jhhc.baseframework.web.service.Sret;
 import org.yecq.goleek.server.service.bean.param.PositionFuturesActionsBean;
 import org.yecq.goleek.server.service.bean.param.PositionFuturesCloseBean;
-import org.yecq.goleek.server.service.bean.param.PositionFuturesDeleteBean;
 import org.yecq.goleek.server.service.bean.param.PositionFuturesEditBean;
 import org.yecq.goleek.server.service.bean.param.PositionFuturesOpenBean;
 import org.yecq.goleek.server.service.bean.result.PositionFuturesInfoBean;
@@ -54,8 +53,8 @@ public class PositionFuturesService {
     }
 
     // 编辑退出条件
-    public Sret editQuit(PositionFuturesEditBean bean) {
-        PositionFutures p = new PositionFutures(bean.getId());
+    public Sret editQuit(String id, PositionFuturesEditBean bean) {
+        PositionFutures p = new PositionFutures(id);
         p.setActionAndQuitPrice(bean.getAction(), bean.getPrice());
         Sret sr = new Sret();
         sr.setOk();
@@ -80,11 +79,11 @@ public class PositionFuturesService {
     }
 
     // 平仓
-    public Sret close(PositionFuturesCloseBean bean) {
+    public Sret close(String id, PositionFuturesCloseBean bean) {
         int lot = bean.getLot();
         double close_price = bean.getPrice();
         String close_date = bean.getDate();
-        PositionFutures p = new PositionFutures(bean.getId());
+        PositionFutures p = new PositionFutures(id);
         p.close(lot, close_price, close_date);
         Sret sr = new Sret();
         sr.setOk();
@@ -92,8 +91,8 @@ public class PositionFuturesService {
     }
 
     // 删除
-    public Sret delete(PositionFuturesDeleteBean bean) {
-        PositionFutures p = new PositionFutures(bean.getId());
+    public Sret delete(String id) {
+        PositionFutures p = new PositionFutures(id);
         p.delete();
         Sret sr = new Sret();
         sr.setOk();

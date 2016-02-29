@@ -2,10 +2,7 @@ package org.yecq.goleek.server.service;
 
 import com.jhhc.baseframework.web.service.Sret;
 import org.yecq.goleek.server.service.bean.param.StockAddBean;
-import org.yecq.goleek.server.service.bean.param.StockInterestBean;
 import org.yecq.goleek.server.service.bean.param.StockModifyBean;
-import org.yecq.goleek.server.service.bean.param.StockRemoveBean;
-import org.yecq.goleek.server.service.bean.param.StockUninterestBean;
 import org.yecq.goleek.server.service.bean.result.StockInfoBean;
 import org.yecq.goleek.server.service.core.ObjectCreator;
 import org.yecq.goleek.server.service.core.Stock;
@@ -93,8 +90,8 @@ public class StockService {
     }
 
     // 删除
-    public Sret remove(StockRemoveBean bean) {
-        Stock st = new Stock(bean.getId());
+    public Sret remove(String id) {
+        Stock st = new Stock(id);
         st.remove();
         Sret sr = new Sret();
         sr.setOk();
@@ -102,7 +99,7 @@ public class StockService {
     }
 
     // 修改
-    public Sret modify(StockModifyBean bean) {
+    public Sret modify(String id, StockModifyBean bean) {
         Map hv = new HashMap();
         if (bean.isCode()) {
             hv.put("code", bean.getCode());
@@ -116,26 +113,8 @@ public class StockService {
         if (bean.isInterest()) {
             hv.put("interest", bean.getInterest());
         }
-        Stock st = new Stock(bean.getId());
+        Stock st = new Stock(id);
         st.modify(hv);
-        Sret sr = new Sret();
-        sr.setOk();
-        return sr;
-    }
-
-    // 感兴趣
-    public Sret interest(StockInterestBean bean) {
-        Stock st = new Stock(bean.getId());
-        st.interest();
-        Sret sr = new Sret();
-        sr.setOk();
-        return sr;
-    }
-
-    // 取消感兴趣
-    public Sret unInterest(StockUninterestBean bean) {
-        Stock st = new Stock(bean.getId());
-        st.unInterest();
         Sret sr = new Sret();
         sr.setOk();
         return sr;

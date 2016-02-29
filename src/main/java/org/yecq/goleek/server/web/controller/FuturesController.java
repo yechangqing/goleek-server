@@ -25,7 +25,7 @@ public class FuturesController extends RestfulControllerBase {
     @Autowired
     private FuturesService fs;
 
-    @RequestMapping(value = {"/exchange_names"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/futures_exchange_names"}, method = RequestMethod.GET)
     public Object do_getExchangeNames(HttpServletRequest request) {
         Sret sr = fs.getExchangeNames();
         return sr;
@@ -37,7 +37,7 @@ public class FuturesController extends RestfulControllerBase {
         return sr;
     }
 
-    @RequestMapping(value = {"futures_interested"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/futures_interested"}, method = RequestMethod.GET)
     public Object do_getListInterested(HttpServletRequest request) {
         Sret sr = fs.getListInterested();
         return sr;
