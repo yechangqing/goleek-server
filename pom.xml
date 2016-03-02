@@ -5,6 +5,7 @@
     <description>
         1、服务器2.0版本开始采用REST风格，客户端也升级到2.0版本
         2、增加网页客户端，试着用EasyUI来做
+        3、拉一个新分支，放在sae上
     </description>
     
     <properties>
@@ -15,7 +16,7 @@
 
     <groupId>org.yecq.goleek</groupId>
     <artifactId>goleek-server</artifactId>
-    <version>2.0</version>
+    <version>2.0.sae</version>
     <packaging>war</packaging>
 
     <name>${artifactId}-${version}</name>
