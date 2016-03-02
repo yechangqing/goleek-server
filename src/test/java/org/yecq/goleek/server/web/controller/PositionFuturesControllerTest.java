@@ -3,6 +3,7 @@ package org.yecq.goleek.server.web.controller;
 import com.google.gson.Gson;
 import com.jhhc.baseframework.test.IntegrateRestfulBase;
 import com.jhhc.baseframework.test.TestReturn;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,5 +106,20 @@ public class PositionFuturesControllerTest extends IntegrateRestfulBase {
         names = ret.getObject(String[].class);
         assertThat(names[0], is("买入平仓 >="));
         assertThat(names[1], is("买入平仓 <="));
+    }
+
+    @Test
+    public void test1_do_getActions() {
+        PositionFuturesActionsBean bean = new PositionFuturesActionsBean("多");
+        Map map = new HashMap();
+        String code = URLEncoder.encode(new Gson().toJson(bean));
+        System.out.println("json=" + code);
+        map.put("json", code);
+        TestReturn ret = doGet("/position_futures_actions", map);
+        assertThat(ret.getStatus(), is("ok"));
+        String[] names = ret.getObject(String[].class);
+        assertThat(names[0], is("卖出平仓 <="));
+        assertThat(names[1], is("卖出平仓 >="));
+
     }
 }
